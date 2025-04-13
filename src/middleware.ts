@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from './auth';
 import { authRoutes, publicRoutes } from './routes';
 import { getToken } from 'next-auth/jwt';
 
