@@ -8,11 +8,13 @@ import Link from "next/link";
 import React from "react";
 import { GiSelfLove } from "react-icons/gi";
 import NavLink from "./NavLink";
+import { auth } from "@/auth";
+import UserMenu from "./UserMenu";
 // import { auth } from "@/auth";
 // import { getUserInfoForNav } from "@/app/actions/userActions";
 
 export default async function TopNav() {
-  // const session = await auth();
+  const session = await auth();
   // const userInfo =
   //   session?.user && (await getUserInfoForNav());
 
@@ -65,7 +67,9 @@ export default async function TopNav() {
           ))}
         </NavbarContent>
         <NavbarContent justify="end">
-          {
+          {session?.user ? (
+            <UserMenu user={session.user} />
+          ) : (
             <>
               <Button
                 as={Link}
@@ -84,7 +88,7 @@ export default async function TopNav() {
                 Register
               </Button>
             </>
-          }
+          )}
         </NavbarContent>
       </Navbar>
       {/* <FiltersWrapper /> */}

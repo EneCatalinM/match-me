@@ -1,14 +1,16 @@
 'use client'
 
-import { loginSchema, LoginSchema } from "@/lib/LoginSchema";
+import { signInUser } from "@/app/actions/authActions";
+import { loginSchema, LoginSchema } from "@/lib/schemas/LoginSchema";
 import { Button, Card, CardBody, CardHeader, Input } from "@heroui/react"
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi"
+import { toast } from "react-toastify";
 
 
 const LoginForm = () => {
-
     const {
         register,
         handleSubmit,
@@ -17,9 +19,18 @@ const LoginForm = () => {
         resolver: zodResolver(loginSchema),
         mode: "onTouched",
     });
-    const onSubmit = (data: LoginSchema) =>
-        console.log(data);
 
+    const router = useRouter()
+
+    const onSubmit = async (data: LoginSchema) => {
+        const result = await signInUser(data)
+        if (result.status === 'success') {
+            router.push("/members");
+            router.refresh()
+        } else {
+            toast.error(result.error as string)
+        }
+    }
     return (
         <Card className="w-3/5 mx-auto">
             <CardHeader className="flex flex-col items-center justify-center">
