@@ -8,7 +8,10 @@ import Link from "next/link";
 import React from "react";
 
 type Props = {
-    user: Session["user"];
+    user: {
+        name: string | null;
+        image: string | null;
+    } | null;
 };
 
 export default function UserMenu({

@@ -2,6 +2,7 @@
 
 import { registerUser } from "@/app/actions/authActions";
 import { registerSchema, RegisterSchema } from "@/lib/schemas/RegisterSchema";
+import { handleFormServerErrors } from "@/lib/util";
 import { Button, Card, CardBody, CardHeader, Input } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -30,18 +31,7 @@ const RegisterForm = () => {
                 "/login"
             )
         } else {
-            if (Array.isArray(result.error)) {
-                result.error.forEach((e: any) => {
-                    const fieldName = e.path.join(".") as | "email" | "name" | "password"
-                    setError(fieldName, {
-                        message: e.message
-                    })
-                })
-            } else {
-                setError("root.serverError", {
-                    message: result.error
-                })
-            }
+            handleFormServerErrors(result, setError);
         }
     };
     return (
